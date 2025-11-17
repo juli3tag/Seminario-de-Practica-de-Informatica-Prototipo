@@ -1,55 +1,45 @@
 # MANTIS-PM (Prototipo) - Proyecto completo
+### 📘 Descripción general del proyecto
 
-Contenido:
-- Código fuente Java en `src/org/byjuju/mantispm/...`
-- Script SQL `MantisBD.sql` para crear la base de datos y seeds (MySQL)
-- Estructura: modelos, DAOs, servicios, vista (CLI) y main.
+MANTIS-PM es un prototipo operacional desarrollado en Java para el monitoreo de sensores, la detección de condiciones anómalas y la gestión de órdenes de trabajo de mantenimiento.
+El sistema integra captura de datos, aplicación de reglas configurables, persistencia en una base de datos MySQL y una interfaz de usuario por consola.
 
-## Requisitos
-- Java JDK 11+ instalado
-- MySQL 5.7+ o 8.x (compatible con JSON)
-- MySQL Workbench (opcional, para ejecutar el script SQL)
-- (Opcional) Maven para manejar dependencias
-- MySQL Connector/J (si compilas sin Maven): `mysql-connector-java-X.Y.Z.jar`
+Este repositorio contiene la versión presentada en el cuarto trabajo práctico (AP4), donde se consolidan los avances realizados en entregas anteriores e incorpora los requisitos específicos del módulo.
 
-## Instrucciones rápidas (sin Maven)
-1. Crear la base de datos:
-   - Abrir MySQL Workbench o consola mysql.
-   - Ejecutar el script `MantisBD.sql` (archivo incluido) para crear la base y datos iniciales.
+El objetivo del proyecto es demostrar el diseño e implementación de un sistema informático realista, empleando buenas prácticas de programación orientada a objetos, arquitectura por capas, patrón DAO y persistencia con MySQL.
 
-2. Ajustar credenciales:
-   - Editar `src/org/byjuju/mantispm/dao/ConexionBD.java` si tus credenciales difieren (usuario/clave/host).
+### 📂 Contenido del repositorio
 
-3. Compilar:
-   - Descargar el driver JDBC (mysql-connector-java).
-   - Compilar desde la raíz del proyecto:
-     ```
-     javac -cp ".:path/to/mysql-connector-java.jar" -d out $(find src -name "*.java")
-     ```
-     En Windows usa `;` en lugar de `:` en el classpath.
+- src/org/byjuju/mantispm/
 
-4. Ejecutar:
-   - Lanzar la aplicación:
-     ```
-     java -cp "out:./path/to/mysql-connector-java.jar" org.byjuju.mantispm.principal.Main
-     ```
+Código fuente completo organizado en paquetes:
 
-## Instrucciones con Maven (recomendado)
-1. Crear un `pom.xml` con dependencia a `mysql-connector-java`.
-2. Ejecutar:
-   ```
-   mvn compile
-   mvn exec:java -Dexec.mainClass="org.byjuju.mantispm.principal.Main"
-   ```
+- model → entidades de dominio
+- dao → acceso a datos (patrón DAO)
+- servicio → lógica de negocio y reglas
+- vista → interfaz por consola (CLI)
+- principal → punto de entrada (Main)
 
-## Qué probar
-- Opción 1 del menú: registrar lecturas manualmente.
-- Opción 2: demo de inserción y procesamiento (inserta lectura y procesa alertas).
-- Opción 3: ejecutar procesador manualmente.
-- Revisar tablas: `SELECT * FROM lectura ORDER BY registrado_en DESC LIMIT 20;`
+- MantisBD.sql - Script SQL para crear la base de datos, tablas, relaciones y datos iniciales.
 
-## Notas
-- La conexión por defecto usa usuario `root` y password `hola`. Cambialo en `ConexionBD.java`.
-- El prototipo usa JDBC directo y DAOs; es sencillo de entender y está preparado para migrar a un framework (Spring/Hibernate) si se desea.
-- Para pruebas intensivas con muchas lecturas, considerar particionado o particionado por fecha en `lectura`.
+### 🧱 Arquitectura general
 
+El prototipo adopta una arquitectura en capas, compuesta por:
+
+1. Capa de dominio (Modelos). Representa las entidades principales: sensores, lecturas, alertas, órdenes de trabajo, configuraciones, etc.
+
+2. Capa de acceso a datos (DAO). Implementa conexión a MySQL, consultas, inserciones y actualizaciones. Se utiliza JDBC, manejo adecuado de excepciones y separación clara entre lógica de negocio y persistencia.
+
+3. Capa de servicios. Contiene las reglas que procesan lecturas, generan alertas y crean órdenes de trabajo cuando corresponde.
+
+4. Capa de presentación (CLI). Un menú interactivo que permite operar el sistema de forma simple y verificar los casos de uso principales.
+
+### 🧪 Funcionalidades disponibles
+
+El prototipo permite verificar los principales casos de uso definidos en el análisis:
+
+- Registrar lecturas manuales desde la interfaz CLI.
+- Procesar lecturas pendientes y aplicar reglas configuradas.
+- Generar alertas automáticas según umbrales.
+- Crear órdenes de trabajo (manuales o automáticas).
+- Consultar historial de lecturas, alertas y órdenes.
